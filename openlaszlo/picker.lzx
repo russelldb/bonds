@@ -1,0 +1,30 @@
+<library>
+	<!-- include stuff -->
+	<include href="utils/layouts/simplelayout.lzx" />
+	<include href="lz/window.lzx" />
+	<include href="lz/button.lzx" />
+	<!-- the bonds buttons -->
+	<include href="buttons.lzx"/>
+	<include href="bondsWindow.lzx"/>
+
+	<class name="Picker" extends="window" closeable="false" resizable="false" title="Choose a number" oninit="this.initPicker()">
+		<attribute name="maxBonds" type="number"/>
+		<attribute name="rows" type="number"/>
+	
+		<method name="initPicker">
+		 	<![CDATA[
+			Debug.write("init picker");
+			this.setAttribute('width', this['rows'] * 64);
+			for(cnt=0; cnt < this['maxBonds']; cnt++) { 
+				if(cnt % this['rows'] == 0) {
+					nV = new LzView(this);
+					new lz.simplelayout(nV, {axis: 'x', spacing: 1});
+				}
+				new lz.ChoiceButton(nV, {labelText:  cnt+1, numberChoice:  cnt+1, id: 'pickerButton'+(cnt+1)});
+			}
+		 	]]>
+		</method>
+	
+		<simplelayout axis="y" spacing="1"/>
+	</class>
+</library>

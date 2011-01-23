@@ -1,0 +1,58 @@
+<library>
+<!-- classes for the game buttons in number bonds -->
+	<class name="GameButton" clickable="true" oninit="this.initButton()" bgcolor="blue" height="60" width="60">
+		<attribute name="labelText" type="string"/>
+		<method name="initButton">
+		 <![CDATA[
+			this.label.setAttribute('text', this['labelText']);
+		 ]]>
+		</method>
+	
+		<text name="label" fontsize="18" fgcolor="#ffffff" valign="middle" align="center"/>	
+	</class>
+
+	<class name="ChoiceButton" extends="GameButton" onclick="this.startBondsGame()">
+		<attribute name="numberChoice" type="number"/>
+		<method name="startBondsGame">
+		 <![CDATA[
+		//This needs doing right so that the button "owns" the data and the create bonds window...maybe the bonds window should have the datasource!!!!
+			var win = new lz.BondsWindow(canvas, {daddy: this, number: numberChoice});	
+			
+		  ]]>
+		</method>
+	</class>
+
+	<class name="CorrectButton" extends="GameButton" onclick="this.goGreen()">
+		<attribute name="listenerInstance" type="expression"/>
+		<attribute name="listenerMethod" type="string"/>
+		
+		<handler name="oninit">
+			new LzDelegate(listenerInstance, listenerMethod, this, "onclick");
+		</handler>
+		
+		<method name="goGreen">
+		 <![CDATA[
+			this.setAttribute('bgcolor', '#33cc33');
+			this.setAttribute("clickable", false);
+			
+		  ]]>
+		</method>
+	</class>
+
+	<class name="WrongButton" extends="GameButton" onclick="this.goRed()">
+		<attribute name="listenerInstance" type="expression"/>
+		<attribute name="listenerMethod" type="expression"/>
+	
+		<handler name="oninit">
+			new LzDelegate(listenerInstance, listenerMethod, this, "onclick");
+		</handler>
+	
+		<method name="goRed">
+		 <![CDATA[
+			this.setAttribute('bgcolor', 'red');
+			this.setAttribute("clickable", false); 
+		  ]]>
+		</method>
+	</class>
+
+</library>

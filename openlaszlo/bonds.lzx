@@ -1,0 +1,11 @@
+<canvas width="800" height="500" id="canvas" proxied="false">
+
+<!-- the picker window -->
+<include href="picker.lzx"/>
+
+
+
+<!-- create the picker window -->
+<Picker id="picker" maxBonds="20" rows="5"/>
+
+</canvas>

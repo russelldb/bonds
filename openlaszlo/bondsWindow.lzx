@@ -1,0 +1,93 @@
+<library>
+	<include href="progressBar.lzx"/>
+	
+	<class name="BondsWindow" extends="modaldialog" content_inset_bottom="0" content_inset_top="0" content_inset_left="0" content_inset_right="0" closeable="true">
+		<attribute name="number" type="number" />
+		<attribute name="daddy" type="expression" />
+			
+		<dataset type="http" name="bondsData" querytype="GET">
+			<handler name="ondata">
+				counter = 0;
+				ptr = this.getPointer();
+				ptr.setXPath("/bonds");
+				this.parent.processData( ptr, picker );
+			</handler>
+		</dataset>
+			
+		<simplelayout axis="y" spacing="1"/>
+		
+		<handler name="oninit">	
+			this.bondsData.setAttribute("src", "http://localhost:8001/"+ this['number']);
+			this.bondsData.doRequest();
+		</handler>
+		
+		<method name="processData" args="ptr">
+		 <![CDATA[
+		 	this.open();
+		 	var total = ptr.xpathQuery('@total');
+		 	var rows = Math.sqrt(total);
+			var n = ptr.xpathQuery('@for');
+
+			this.setAttribute('title', 'Number bonds for ' + n);
+			this.setAttribute('width', 64*rows);	
+
+			var cnt = 0;
+			var correctCount = 0;
+			var wrongCount = 0;
+			
+			var pBar = new lz.ProgressBar(this, {height: 50, daddy: daddy, name: 'pBar', total: total, correctTotal: Number(n)+1, wrongTotal: 0});; 
+
+			ptr.selectChild(); 
+			do { 
+				if(cnt % rows === 0) {
+					v = createView(this);
+					createLayout(v);
+				}
+				b1 = Number(ptr.xpathQuery('@b1'));
+				b2 =  Number(ptr.xpathQuery('@b2'));
+
+				if(b1 + b2 == n) {
+					var button = new lz.CorrectButton(v, {labelText: ptr.xpathQuery('text()'), listenerInstance: pBar, listenerMethod: "correct"});
+					correctCount++;
+				} else {
+					var button = new lz.WrongButton(v, {labelText: ptr.xpathQuery('text()'), listenerInstance: pBar, listenerMethod: "wrong"});
+					wrongCount++;
+				}
+
+				cnt++;
+			} while (ptr.selectNext());
+			
+		 			
+		 ]]>
+		</method>
+		
+		<method name="createView" args="p" >
+		   <![CDATA[
+		   	view = new LzView(p);
+			return view;
+		   ]]>
+		</method>
+
+		<method name="createLayout" args="p" >
+		   <![CDATA[
+		   	var layout = new lz.simplelayout(p, {axis: 'x', spacing: 1});
+			return layout;
+		   ]]>
+		</method>
+		
+		<method name="correct" args="a">
+		  <![CDATA[
+			 pBar.decrementCount();
+			 if(pBar.getCounter()==0) {
+			 	this['daddy'].setAttribute('bgcolor', '#33cc33');
+			 }
+		   ]]>
+		</method>
+		<method name="wrong" args="a">
+		  <![CDATA[
+			 this['daddy'].setAttribute('bgcolor', 'red');
+		   ]]>
+		</method>
+				
+	</class>
+</library>
