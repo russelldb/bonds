@@ -1,0 +1,40 @@
+<library>
+	<class name="ProgressBar" width="100%" bgcolor="#000000" oninit="this.initProgressBar()">
+			<attribute name="daddy" type="expression"/>
+			<attribute name="total" type="number"/>
+			<attribute name="correctTotal" type="number"/>
+			<attribute name="wrongTotal" type="number"/>
+		
+			<method name="initProgressBar">
+			 <![CDATA[
+				this.progressBar.totalLabel.setAttribute('text', this['correctTotal']);
+			 ]]>
+			</method>
+			
+			
+			<method name="correct" args="a">
+			 <![CDATA[
+				this['correctTotal'] = this['correctTotal'] -1;
+				this.progressBar.totalLabel.setAttribute('text', this['correctTotal']);
+				if(this['correctTotal']==0 && this['wrongTotal']==0) {
+					this['daddy'].setAttribute('bgcolor', '#33cc33');
+			 	}
+			 ]]>
+			</method>
+			
+			<method name="wrong" args="a">
+			 <![CDATA[
+				this['wrongTotal'] = this['wrongTotal'] +1;
+				this['daddy'].setAttribute('bgcolor', 'red');
+			 ]]>
+			</method>
+			
+			
+			<view name="progressBar" bgcolor="${parent.bgcolor}" width="100%" height="100%">
+				<simplelayout axis="y"/>
+				<text name="totalLabel" fontsize="18" fgcolor="#ffffff" valign="middle" align="center"/>
+				<text name="totalLabel2" fontsize="12" fgcolor="#ffffff" valign="middle" align="center" text="to find"/>
+			</view>	
+	</class>
+	
+</library>
