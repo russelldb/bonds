@@ -1,1 +1,20 @@
 At my kids' school they teach 'Number Bonds'. These are the simple additions that make up a specific number, like say all the ways to make 10 is the sum of two numbers. This little web app tests them on their number bonds.
+
+Have a look at http://wombat.me. 
+
+If you want to faff wi' source then just
+
+	git clone git://github.com/russelldb/bonds.git
+
+	./rebar get-deps
+        ./start_dev.sh
+
+then open a browser to http://localhost:8001
+
+The flash stuff is generated from the openlaszlo files in the openlaszlo directory. If you want to edit them use any old text editor and grab the Openlaszlo compiler from http://www.openlaszlo.org/download.
+
+When you like what you have copy the swf into files/site/www then run
+
+	./rebar generate
+
+Tar up the bonds/ dir and stick it on your webserver.
