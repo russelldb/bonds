@@ -17,7 +17,7 @@
 		<simplelayout axis="y" spacing="1"/>
 		
 		<handler name="oninit">	
-			this.bondsData.setAttribute("src", "http://localhost:8001/"+ this['number']);
+			this.bondsData.setAttribute("src", "/"+ this['number']);
 			this.bondsData.doRequest();
 		</handler>
 		
